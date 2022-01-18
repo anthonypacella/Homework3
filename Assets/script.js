@@ -14,6 +14,7 @@ var random;
 var passwordArray = [];
 var passwordString;
 var password;
+var arrayLength;
 
 function requestCharacterLength () {
     characterLength = prompt("How many characters would you like your password to be?");
@@ -31,9 +32,6 @@ function requestCharacterLength () {
       }
 }
 
-requestCharacterLength();
-checkIncludedCharacters();
-
 function checkIncludedCharacters() {
     lowercaseIncluded = confirm("Click OK if you want lowercase letters included in your password.");
     uppercaseIncluded = confirm("Click OK if you want uppercase letters included in your password.");
@@ -48,83 +46,85 @@ function checkIncludedCharacters() {
 
 }
 
+function combineArrays () {
 
-if (lowercaseIncluded) {
+    if (lowercaseIncluded) {
 
-  lowercaseArray = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
-
+      lowercaseArray = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+    
+    }
+    
+    else if (!lowercaseIncluded) {
+    
+      lowercaseArray = [];
+    
+    }
+    
+    if (uppercaseIncluded) {
+    
+      uppercaseArray = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+    
+    }
+    
+    else if (!uppercaseIncluded) {
+    
+      uppercaseArray = [];
+    
+    }
+    
+    if (specialIncluded) {
+    
+      specialArray = ["!", "#", "$", "%", "&" ,"'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";" , "<" , "=" , ">" , "?", "@" , "[", "^", "_" , "`", "{", "|", "}", "~"];
+    
+    }
+    
+    else if (!specialIncluded) {
+    
+      specialArray = [];
+    
+    }
+    
+    if (numberIncluded) {
+    
+      numberArray = [0,1,2,3,4,5,6,7,8,9];
+    
+    }
+    
+    else if (!numberIncluded) {
+    
+      numberArray = [];
+    
+    }
+    
+    if (lowercaseIncluded) {
+    
+      fullCharacterArray = lowercaseArray.concat(uppercaseArray, specialArray, numberArray);
+    }
+    
+    else if (uppercaseIncluded) {
+    
+      fullCharacterArray = uppercaseArray.concat(lowercaseArray, specialArray, numberArray);
+    
+    }
+    
+    else if (specialIncluded) {
+    
+      fullCharacterArray = specialArray.concat(lowercaseArray, uppercaseArray, numberArray);
+    
+    }
+    
+    else if (numberIncluded) {
+    
+      fullCharacterArray = numberArray.concat(lowercaseArray, uppercaseArray, specialArray);
+    
+    }
 }
-
-else if (!lowercaseIncluded) {
-
-  lowercaseArray = [];
-
-}
-
-if (uppercaseIncluded) {
-
-  uppercaseArray = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-
-}
-
-else if (!uppercaseIncluded) {
-
-  uppercaseArray = [];
-
-}
-
-if (specialIncluded) {
-
-  specialArray = ["!","@","#","$","%","^","&","*","(",")","_","-","+","=","{","}",":",";","<",",",">",".","?","/"];
-
-}
-
-else if (!specialIncluded) {
-
-  specialArray = [];
-
-}
-
-if (numberIncluded) {
-
-  numberArray = [0,1,2,3,4,5,6,7,8,9];
-
-}
-
-else if (!numberIncluded) {
-
-  numberArray = [];
-
-}
-
-if (lowercaseIncluded) {
-
-  fullCharacterArray = lowercaseArray.concat(uppercaseArray, specialArray, numberArray);
-}
-
-else if (uppercaseIncluded) {
-
-  fullCharacterArray = uppercaseArray.concat(lowercaseArray, specialArray, numberArray);
-
-}
-
-else if (specialIncluded) {
-
-  fullCharacterArray = specialArray.concat(lowercaseArray, uppercaseArray, numberArray);
-
-}
-
-else if (numberIncluded) {
-
-  fullCharacterArray = numberArray.concat(lowercaseArray, uppercaseArray, specialArray);
-
-}
-
-var arrayLength = fullCharacterArray.length;
-
 
 // Write password to the #password input
 function writePassword() {
+  
+  requestCharacterLength();
+  checkIncludedCharacters();
 
   password = generatePassword();
   var passwordText = document.querySelector("#password");
@@ -133,9 +133,11 @@ function writePassword() {
 }
 
 function generatePassword() {
-
   passwordArray = [];
+  combineArrays();
 
+  arrayLength = fullCharacterArray.length;
+  
   for (var i = 0; i < characterLength; i++) {
 
       random = Math.floor(Math.random() * arrayLength);
